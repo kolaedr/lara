@@ -10,6 +10,10 @@
 @endsection
 
 
+@section('sidebar')
+    <h3>@parent</h3>
+  ADV  
+@endsection
 
 @section('content')
     <h1>{{$title}}</h1>
