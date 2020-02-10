@@ -1,6 +1,6 @@
 @include('layouts.header')
 
-      <div class="container bg-info p-3">
+      <div class="container bg-light p-3">
           @yield('content')
       </div>
     
