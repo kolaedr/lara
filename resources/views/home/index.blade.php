@@ -10,14 +10,13 @@
 @endsection
 
 
-
 @section('content')
     <h1>{{$title}}</h1>
     {!!$subTitle!!}<br>
 
 {{-- @section('title')
     Lara
-@endsection 
+@endsection
 or --}}
 @endsection
 
