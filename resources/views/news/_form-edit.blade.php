@@ -1,4 +1,7 @@
+
+@method('PUT')
 @csrf
+
     <div class="form-group">
         <label for="title">News name</label>
     <input type="text" class="col-md-4 form-control @error('title') is-invalid @enderror" name="title" id="title" placeholder="Categories name" value="{{$news->title}}">
@@ -10,9 +13,8 @@
     <div class="form-group">
         <label for="category">Categories</label><br>
         <select name="category" id="category"  class="col-md-4 custom-select @error('category') is-invalid @enderror">
-            <option >Change categories</option>
             @foreach ($categories as $item)
-                <option value="{{$item->id}}" {{$news?($item->id===$news->category_id?'selected':''):''}}>{{ucfirst(trans($item->name))}}</option>
+                <option value="{{$item->id}}" {{$item->id===$news->category_id?'selected':''}}>{{ucfirst(trans($item->name))}}</option>
             @endforeach
         </select>
         @error('category')
@@ -31,12 +33,12 @@
 
     <div class="form-group">
         <label for="img">News image</label>
-    <input type="file" class="col-md-4 custom-form-control @error('img') is-invalid @enderror" name="img" id="img" placeholder="Categories name" value="{{$news->img}}">
+    <input type="file" class="col-md-4 custom-form-control @error('img') is-invalid @enderror" name="img" id="img" placeholder="Categories name" value="{{$news->title}}">
         @error('img')
             <div class="text-danger">{{ $message }}</div>
         @enderror
     </div>
 
 
-    <button type="submit" class="btn btn-success">{{$news->id ? 'Save changes':'Add news'}}</button>
+    <button type="submit" class="btn btn-success">Save change</button>
     <a href="/news" class="ml-3 text-success">back</a>

@@ -10,14 +10,11 @@
 @endsection
 
 
-<<<<<<< HEAD
-=======
 @section('sidebar')
     <h3>@parent</h3>
-  ADV  
+  ADV
 @endsection
 
->>>>>>> b09704632d4d2e5e8240c5870f8e88b3ad9897fe
 @section('content')
     <h1>{{$title}}</h1>
     {!!$subTitle!!}<br>

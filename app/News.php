@@ -9,4 +9,9 @@ class News extends Model
     //если название таблицы не соответствует названию модели
     //таблица множественное число, модель единственное)
     protected $table = 'news';
+
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
 }

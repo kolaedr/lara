@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\News;
 use App\Category;
+use DB;
 
 class NewsController extends Controller
 {
@@ -15,13 +16,22 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $title = 'All category';
-        $news = News::all();
+        $title = 'All news';
+        // $news = News::all();
+        $news = DB::table('news')
+            ->join('categories', 'news.category_id', '=', 'categories.id')
+            ->select('news.*', 'categories.name as cat')
+            ->get();
         $categories = Category::all();
-        // dd($categories);
-        
+        $newsCountAll = DB::table('news')->count();
+        $newsCount = DB::table('categories')
+            ->join('news', 'category_id', '=', 'categories.id')
+            ->groupBy('categories.id')
+            ->select('categories.id', DB::raw('count(1) AS count'))->get();;
+        // dd($newsCount);
+
         // return view('news.news', compact('title', 'news'));
-        return view('news.index', compact('title', 'categories'));
+        return view('news.index', compact('title', 'categories', 'news', 'newsCountAll', 'newsCount'));
     }
 
     /**
@@ -31,11 +41,11 @@ class NewsController extends Controller
      */
     public function create()
     {
-        $title = 'Create category';
+        $title = 'Add news';
         $news = new News();
         $categories = Category::all();
         // dd($categories);
-        
+
         // return view('news.news', compact('title', 'news'));
         return view('news.create', compact('title', 'categories', 'news'));
     }
@@ -51,15 +61,21 @@ class NewsController extends Controller
         $request->validate([
             'title' => 'required|max:100|min:3',
             'content' => 'required|min:3',
-            'category' => 'required'
+            'category' => 'required',
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+        //upload images
+        $imageName = time() . '.' . $request->img->extension();
+        $request->img->move(public_path('images'), $imageName);
+
         $news = new News();     //в модели все столбцы таблицы записываются в свойства
         $news->title = $request->title;
         $news->content = $request->content;
+        $news->img = $imageName;
         $news->category_id = $request->category;
         $news->save();
 
-        return redirect('news')->with('success', 'Category with id: '.$news->title.' added!');
+        return redirect('news')->with('success', 'News with id: ' . $news->title . ' added!');
     }
 
     /**
@@ -81,7 +97,10 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $news = News::find($id);
+        $categories = Category::all();
+        $title = 'Edit news #' . $id;
+        return view('news.edit', compact('title', 'news', 'categories'));
     }
 
     /**
@@ -93,7 +112,29 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:100|min:3',
+            'content' => 'required|min:3',
+            'category' => 'required',
+            'img' => 'required_without:category|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        $news = News::find($id);
+        if ($request->img) {
+            $imageName = time() . '.' . $request->img->extension();
+
+            $request->img->move(public_path('images'), $imageName);
+            $news->img = $imageName;
+        }
+
+
+
+        $news->title = $request->title;
+        $news->content = $request->content;
+
+        $news->category_id = $request->category;
+        $news->save();
+
+        return redirect('news')->with('success', 'Category with id: ' . $news->id . ' update!');
     }
 
     /**
@@ -104,6 +145,8 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $news = News::find($id);
+        $news->delete();
+        return redirect('news')->with('success', 'Category with id: ' . $news->id . ' DELETED!');
     }
 }

@@ -3,13 +3,13 @@
 
 @section('content')
     <h1>{{$title}}</h1>
-    
-    
+
+
 @endsection
 
 @section('sidebar')
     <h3>@parent</h3>
-    
+
     @if (session('success'))
         <div class="alert alert-success">{{session('success')}}</div>
     @endif
@@ -28,10 +28,8 @@
                 <td>{{$loop->iteration}}</td>
                 <td>{{$item->name}}</td>
                 <td style="display: flex;">
-                    {{-- <a href='category/{{$item->id}}/edit'>edit</a> --}}
                     <form action="/category/{{$item->id}}/edit" method="GET">
-                        {{-- @method('DELETE') --}}
-                        {{-- @csrf --}}
+                        @csrf
                         <button class="btn btn-success">Edit</button>
                     </form>
                     <form action="/category/{{$item->id}}" method="POST">
@@ -41,8 +39,8 @@
                     </form>
                 </td>
             </tr>
-            @endforeach 
-            
+            @endforeach
+
         </tbody>
     </table>
 @endsection
@@ -51,5 +49,5 @@
 
 
 @section('css')
-    
+
 @endsection

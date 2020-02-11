@@ -5,7 +5,7 @@
 
 @section('content')
 <h1>{{$title}}</h1>
-    
+
     @if (session('success'))
         <div class="alert alert-success">{{session('success')}}</div>
     @endif
@@ -13,15 +13,14 @@
         @include('news._form')
         @csrf
 
-        {{-- <button type="submit" class="btn btn-success">Create news</button> --}}
     </form>
 
-    
+
 @endsection
 
 
 
 
 @section('css')
-    
+
 @endsection
