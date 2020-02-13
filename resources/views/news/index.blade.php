@@ -10,9 +10,10 @@
 
                 <div class="card col-md-10">
                     <div class="card-body">
-                    <h5 class="card-title">{{$item->title}}</h5>
+                    <h5 class="card-title">{{$item->title}} <small class="text-muted">({{$item->created_at}})</small></h5>
                     <p class="card-text">{{$item->content}}</p>
                     <p class="card-text"><small class="text-muted">{{$item->cat}}</small></p>
+
                     <div class="row justify-content-start ">
                         <form action="/news/{{$item->id}}/edit" method="GET">
                             @csrf

@@ -11,20 +11,51 @@
 
 
 @section('sidebar')
-    <h3>@parent</h3>
-  ADV
+    <h3 class="m-2">@parent</h3>
+
+    @if (session('success'))
+        <div class="alert alert-success">{{session('success')}}</div>
+    @endif
+    <div class="list-group col-8 mt-3 mb-3 categories">
+        <a href="#" class="list-group-item list-group-item-action text-primary" data-cat__id="all">All categories <span class="badge badge-primary">{{$newsCountAll}}</span></a>
+    @foreach ($categories as $item)
+      <a href="#" class="list-group-item list-group-item-action" data-cat__id="{{$item->id}}">
+        {{ucfirst(trans($item->name))}}
+        @foreach ($newsCount as $count)
+            <span class="badge badge-primary">{{$count->id==$item->id?$count->count:''}}</span>
+        @endforeach
+
+    </a>
+    @endforeach
+    </div>
+
 @endsection
 
 @section('content')
     <h1>{{$title}}</h1>
-    {!!$subTitle!!}<br>
 
-{{-- @section('title')
-    Lara
-@endsection
-or --}}
-@endsection
+<div class="row ">
+    @foreach ($news as $item)
+        <div class="col-sm-12 m-1 row no-gutters" data-category="{{$item->category_id}}">
 
+            <div class="card col-md-10">
+                <div class="card-body">
+                <h5 class="card-title">{{$item->title}}</h5>
+                <p class="card-text">{{$item->content}}</p>
+                <p class="card-text"><small class="text-muted">{{$item->cat}}</small></p>
+
+                </div>
+            </div>
+            <div class="card-img-right col-md-2">
+                <img src="images/{{$item->img}}" class="  col-md-2" alt="...">
+            </div>
+
+
+        </div>
+    @endforeach
+  </div>
+
+@endsection
 
 
 

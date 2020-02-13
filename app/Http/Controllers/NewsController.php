@@ -99,7 +99,7 @@ class NewsController extends Controller
     {
         $news = News::find($id);
         $categories = Category::all();
-        $title = 'Edit news #' . $id;
+        $title = 'Edit news ' . $id;
         return view('news.edit', compact('title', 'news', 'categories'));
     }
 
@@ -148,5 +148,25 @@ class NewsController extends Controller
         $news = News::find($id);
         $news->delete();
         return redirect('news')->with('success', 'Category with id: ' . $news->id . ' DELETED!');
+    }
+
+    static function all()
+    {
+        $title = 'All news';
+        // $news = News::all();
+        $news = DB::table('news')
+            ->join('categories', 'news.category_id', '=', 'categories.id')
+            ->select('news.*', 'categories.name as cat')
+            ->get();
+        $categories = Category::all();
+        $newsCountAll = DB::table('news')->count();
+        $newsCount = DB::table('categories')
+            ->join('news', 'category_id', '=', 'categories.id')
+            ->groupBy('categories.id')
+            ->select('categories.id', DB::raw('count(1) AS count'))->get();;
+        // dd($newsCount);
+
+        // return view('news.news', compact('title', 'news'));
+        return  compact('title', 'categories', 'news', 'newsCountAll', 'newsCount');
     }
 }

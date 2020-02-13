@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Category;
+use App\News;
+use DB;
 
 class HomeController extends Controller
 {
@@ -13,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -29,10 +32,21 @@ class HomeController extends Controller
     public function index()
     {
         $title = 'Home page';
-        $subTitle = '<em>Users</em>';
-        $user = ['Masha', 'Lena'];
+        $news = DB::table('news')
+            ->join('categories', 'news.category_id', '=', 'categories.id')
+            ->select('news.*', 'categories.name as cat')
+            ->get();
+        $categories = Category::all();
+        $newsCountAll = DB::table('news')->count();
+        $newsCount = DB::table('categories')
+            ->join('news', 'category_id', '=', 'categories.id')
+            ->groupBy('categories.id')
+            ->select('categories.id', DB::raw('count(1) AS count'))->get();;
+        // dd($news);
+        // $subTitle = '<em>Users</em>';
+        // $user = ['Masha', 'Lena'];
         //подключается файл с папки resources/views/home/index.blade.php
-        return view('home.index', compact('title', 'subTitle', 'user'));
+        return view('home.index', compact('title', 'news', 'categories', 'newsCountAll', 'newsCount'));
     }
 
     public function contacts()
