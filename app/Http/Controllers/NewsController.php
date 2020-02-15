@@ -153,11 +153,11 @@ class NewsController extends Controller
     static function all()
     {
         $title = 'All news';
-        // $news = News::all();
-        $news = DB::table('news')
-            ->join('categories', 'news.category_id', '=', 'categories.id')
-            ->select('news.*', 'categories.name as cat')
-            ->get();
+        $news = News::all();
+        // $news = DB::table('news')
+        //     ->join('categories', 'news.category_id', '=', 'categories.id')
+        //     ->select('news.*', 'categories.name as cat')
+        //     ->get();
         $categories = Category::all();
         $newsCountAll = DB::table('news')->count();
         $newsCount = DB::table('categories')

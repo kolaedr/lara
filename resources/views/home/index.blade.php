@@ -11,7 +11,7 @@
 
 
 @section('sidebar')
-    <h3 class="m-2">@parent</h3>
+    {{-- <h3 class="m-2">@parent</h3>
 
     @if (session('success'))
         <div class="alert alert-success">{{session('success')}}</div>
@@ -27,7 +27,7 @@
 
     </a>
     @endforeach
-    </div>
+    </div> --}}
 
 @endsection
 
@@ -35,7 +35,7 @@
     <h1>{{$title}}</h1>
 
 <div class="row ">
-    @foreach ($news as $item)
+    {{-- @foreach ($news as $item)
         <div class="col-sm-12 m-1 row no-gutters" data-category="{{$item->category_id}}">
 
             <div class="card col-md-10">
@@ -52,7 +52,7 @@
 
 
         </div>
-    @endforeach
+    @endforeach --}}
   </div>
 
 @endsection

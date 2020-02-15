@@ -31,7 +31,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        $title = 'Home page';
+        dd(1);
+        $title = 'Home page 1';
         $news = DB::table('news')
             ->join('categories', 'news.category_id', '=', 'categories.id')
             ->select('news.*', 'categories.name as cat')
@@ -42,7 +43,7 @@ class HomeController extends Controller
             ->join('news', 'category_id', '=', 'categories.id')
             ->groupBy('categories.id')
             ->select('categories.id', DB::raw('count(1) AS count'))->get();;
-        // dd($news);
+        dd($news);
         // $subTitle = '<em>Users</em>';
         // $user = ['Masha', 'Lena'];
         //подключается файл с папки resources/views/home/index.blade.php
