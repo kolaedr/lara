@@ -17,7 +17,7 @@
 
 /*******************************/
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeControllerNew@index');
 Route::get('/contacts', 'HomeController@contacts');
 Route::get('/profile', 'HomeController@profile');
 Route::post('/contacts', 'HomeController@getContacts');

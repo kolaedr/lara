@@ -37,6 +37,19 @@
         @enderror
     </div>
 
+    <div class="form-group">
+        <label for="">Image</label>
+
+        <img src="/images/{{$news->img}}" alt="" class="thumbnail">
+        <a href="#" class="remove-img"> Remove</a>
+        <input type="hidden" name="removeImg">
+    {{-- <input type="file" class="col-md-4 custom-form-control @error('img') is-invalid @enderror" name="img" id="img" placeholder="Categories name" value="{{$news->img}}"> --}}
+        @error('img')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+
 
     <button type="submit" class="btn btn-success">{{$news->id ? 'Save changes':'Add news'}}</button>
     <a href="/news" class="ml-3 text-success">back</a>

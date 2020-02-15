@@ -11,7 +11,7 @@
 
 
 @section('sidebar')
-    {{-- <h3 class="m-2">@parent</h3>
+    <h3 class="m-2">@parent</h3>
 
     @if (session('success'))
         <div class="alert alert-success">{{session('success')}}</div>
@@ -27,7 +27,7 @@
 
     </a>
     @endforeach
-    </div> --}}
+    </div>
 
 @endsection
 
@@ -35,24 +35,26 @@
     <h1>{{$title}}</h1>
 
 <div class="row ">
-    {{-- @foreach ($news as $item)
+    @foreach ($news as $item)
         <div class="col-sm-12 m-1 row no-gutters" data-category="{{$item->category_id}}">
 
             <div class="card col-md-10">
                 <div class="card-body">
                 <h5 class="card-title">{{$item->title}}</h5>
                 <p class="card-text">{{$item->content}}</p>
-                <p class="card-text"><small class="text-muted">{{$item->cat}}</small></p>
+                <p class="card-text"><small class="text-muted">{{$item->category->name}}</small></p>
 
                 </div>
             </div>
             <div class="card-img-right col-md-2">
-                <img src="images/{{$item->img}}" class="  col-md-2" alt="...">
+                @if ($item->img)
+                <img src="{{$item->img}}" class="  col-md-12" alt="...">
+                @endif
             </div>
 
 
         </div>
-    @endforeach --}}
+    @endforeach
   </div>
 
 @endsection

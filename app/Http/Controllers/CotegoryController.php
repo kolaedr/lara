@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;       //connection Model
+use App\News;
 
 class CotegoryController extends Controller
 {
@@ -58,7 +59,12 @@ class CotegoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::find($id);
+        // $news = News::where('category_id', '=', $id)->get();
+        $news = News::where('category_id', '=', $id)->paginate(3);
+        // $news = News::where('category_id', '=', $id)->simplePaginate(3);
+        // dd($news);
+        return view('home.show', compact('category', 'news'));
     }
 
     /**

@@ -7,7 +7,7 @@ use App\Category;
 use App\News;
 use DB;
 
-class HomeController extends Controller
+class HomeControllerNew extends Controller
 {
     /**
      * Create a new controller instance.
@@ -31,21 +31,19 @@ class HomeController extends Controller
 
     public function index()
     {
-        dd(1);
-        $title = 'Home page 1';
-        $news = DB::table('news')
-            ->join('categories', 'news.category_id', '=', 'categories.id')
-            ->select('news.*', 'categories.name as cat')
-            ->get();
+        // dd(1);
+        $title = 'Home page ';
+        $news = News::all();
+        // $news = DB::table('news')
+        //     ->join('categories', 'news.category_id', '=', 'categories.id')
+        //     ->select('news.*', 'categories.name as cat')
+        //     ->get();
         $categories = Category::all();
         $newsCountAll = DB::table('news')->count();
         $newsCount = DB::table('categories')
             ->join('news', 'category_id', '=', 'categories.id')
             ->groupBy('categories.id')
-            ->select('categories.id', DB::raw('count(1) AS count'))->get();;
-        dd($news);
-        // $subTitle = '<em>Users</em>';
-        // $user = ['Masha', 'Lena'];
+            ->select('categories.id', DB::raw('count(1) AS count'))->get();
         //подключается файл с папки resources/views/home/index.blade.php
         return view('home.index', compact('title', 'news', 'categories', 'newsCountAll', 'newsCount'));
     }

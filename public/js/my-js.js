@@ -13,16 +13,18 @@ if (links) {
     }
   })
 
-//   for (const item of linksCategories) {
-//     console.log(item.children)
-//     for (const iterator of news) {
-//         if (item.getAttribute('data-cat__id') === iterator.getAttribute('data-category')) {
-//           iterator.style.display = 'none'
-//         } else if (e.target.getAttribute('data-cat__id') === 'all') {
-//           iterator.style.display = 'flex'
-//         } else {
-//           iterator.style.display = 'flex'
-//         }
-//       }
-//   }
+
 };
+
+const revoveImg = document.querySelector('.remove-img');
+if (revoveImg) {
+  revoveImg.addEventListener('click', (e)=>{
+  e.preventDefault();
+  document.querySelector('.thumbnail').remove();
+  e.srcElement.remove();
+  // this.remove().bind(this);
+  document.querySelector('[name="removeImg"]').value = 'remove';
+})
+}
+
+CKEDITOR.replace( 'content' );

@@ -17,11 +17,12 @@ class NewsController extends Controller
     public function index()
     {
         $title = 'All news';
-        // $news = News::all();
-        $news = DB::table('news')
-            ->join('categories', 'news.category_id', '=', 'categories.id')
-            ->select('news.*', 'categories.name as cat')
-            ->get();
+        $news = News::all();
+        // $news = DB::table('news')
+        //     ->join('categories', 'news.category_id', '=', 'categories.id')
+        //     ->select('news.*', 'categories.name as cat')
+        //     ->get();
+        //     dd($news);
         $categories = Category::all();
         $newsCountAll = DB::table('news')->count();
         $newsCount = DB::table('categories')
@@ -62,16 +63,24 @@ class NewsController extends Controller
             'title' => 'required|max:100|min:3',
             'content' => 'required|min:3',
             'category' => 'required',
-            'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         //upload images
-        $imageName = time() . '.' . $request->img->extension();
-        $request->img->move(public_path('images'), $imageName);
-
+        // $imageName = time() . '.' . $request->img->extension();
+        // $request->img->move(public_path('images'), $imageName);
         $news = new News();     //в модели все столбцы таблицы записываются в свойства
+
+        $file = $request->file('img');
+        if ($file) {
+            $fName = $file->getClientOriginalName();
+            $request->img->move('images', $fName);
+            $news->img = 'images/'.$fName;
+        }
+
+        
         $news->title = $request->title;
         $news->content = $request->content;
-        $news->img = $imageName;
+        
         $news->category_id = $request->category;
         $news->save();
 
@@ -97,7 +106,8 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        $news = News::find($id);
+       
+        $news = News::find($id); 
         $categories = Category::all();
         $title = 'Edit news ' . $id;
         return view('news.edit', compact('title', 'news', 'categories'));
@@ -116,22 +126,26 @@ class NewsController extends Controller
             'title' => 'required|max:100|min:3',
             'content' => 'required|min:3',
             'category' => 'required',
-            'img' => 'required_without:category|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         $news = News::find($id);
         if ($request->img) {
-            $imageName = time() . '.' . $request->img->extension();
-
-            $request->img->move(public_path('images'), $imageName);
-            $news->img = $imageName;
+            $file = $request->file('img');
+        if ($file) {
+            $fName = $file->getClientOriginalName();
+            $request->img->move('images', $fName);
+            $news->img = 'images/'.$fName;
         }
-
+        }
+        if ($request->removeImg) {
+            $news->img = NULL;
+        }
 
 
         $news->title = $request->title;
         $news->content = $request->content;
 
-        $news->category_id = $request->category;
+        // $news->category_id = $request->category;
         $news->save();
 
         return redirect('news')->with('success', 'Category with id: ' . $news->id . ' update!');
