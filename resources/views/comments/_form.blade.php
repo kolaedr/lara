@@ -11,7 +11,7 @@
     <div class="form-inline">
         <div class="form-group col-8">
             <label for="name">Your name</label>
-        <input type="text" class="col-md-4 form-control ml-2 @error('title') is-invalid @enderror" name="name" id="name" placeholder="Your name" value="{{Auth::user()->name}}">
+        <input type="text" class="col-md-4 form-control ml-2 @error('title') is-invalid @enderror" name="name" id="name" placeholder="Your name" value="{{Auth::check()?Auth::user()->name: ''}}">
             @error('name')
                 <div class="text-danger">{{ $message }}</div>
             @enderror

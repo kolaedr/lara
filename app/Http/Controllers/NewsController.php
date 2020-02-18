@@ -64,7 +64,7 @@ class NewsController extends Controller
         $request->validate([
             'title' => 'required|max:100|min:3',
             'content' => 'required|min:3',
-            'category' => 'required',
+            'category' => '',
             'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         //upload images
@@ -78,12 +78,14 @@ class NewsController extends Controller
             $request->img->move('images', $fName);
             $news->img = 'images/'.$fName;
         }
-
+        // dd($request->category);
 
         $news->title = $request->title;
         $news->content = $request->content;
+        if (is_int($request->category)) {
+            $news->category_id = $request->category;
+        }
 
-        $news->category_id = $request->category;
         $news->save();
 
         return redirect('news')->with('success', 'News with id: ' . $news->title . ' added!');
