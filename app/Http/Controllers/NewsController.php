@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 use App\News;
 use App\Category;
-use DB;
+use App\Comment;
+
 
 class NewsController extends Controller
 {
@@ -77,10 +79,10 @@ class NewsController extends Controller
             $news->img = 'images/'.$fName;
         }
 
-        
+
         $news->title = $request->title;
         $news->content = $request->content;
-        
+
         $news->category_id = $request->category;
         $news->save();
 
@@ -95,7 +97,12 @@ class NewsController extends Controller
      */
     public function show($id)
     {
-        //
+        $news = News::find($id);
+        $comments = Comment::where('news_id', '=', $id)->get();
+        // $news = News::where('category_id', '=', $id)->get();
+        // $news = News::where('category_id', '=', $id)->paginate(3);
+        // $news = News::where('category_id', '=', $id)->simplePaginate(3);
+        return view('news.show', compact('comments', 'news'));
     }
 
     /**
@@ -106,8 +113,8 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-       
-        $news = News::find($id); 
+
+        $news = News::find($id);
         $categories = Category::all();
         $title = 'Edit news ' . $id;
         return view('news.edit', compact('title', 'news', 'categories'));

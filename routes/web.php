@@ -42,4 +42,5 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 // =======
 Route::resource('/category', 'CotegoryController');
 Route::resource('/news', 'NewsController');
+Route::resource('/comment', 'CommentController');
 // >>>>>>> b09704632d4d2e5e8240c5870f8e88b3ad9897fe

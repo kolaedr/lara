@@ -19,14 +19,9 @@
     {{-- Get news use models --}}
 
     @foreach ($news as $item)
-        <article class="mt-2 mb-2 p-2 col-10 border border-white">
-            <h4><a href="/news/{{$item->id}}">{{$item->title}}</a> </h4>
+        <article>
+            <h3><a href="">{{$item->title}}</a></h3>
             <p>{!! $item->content !!}</p>
-            <div class="d-flex justify-content-between">
-                <small class="text-muted">Comments: {{$comments->count()}}</small>
-                <small class="text-muted">Publish date: {{$item->created_at}}</small>
-            </div>
-
         </article>
     @endforeach
     {{$news->links()}}

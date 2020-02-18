@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;       //connection Model
 use App\News;
+use App\Comment;
 
 class CotegoryController extends Controller
 {
@@ -18,7 +19,7 @@ class CotegoryController extends Controller
         $title = 'All category';
         $categories = Category::all();
         // dd($categories);
-        
+
         return view('home.category', compact('title', 'categories'));
     }
 
@@ -60,11 +61,14 @@ class CotegoryController extends Controller
     public function show($id)
     {
         $category = Category::find($id);
+        // $comments = Comment::find($id);
         // $news = News::where('category_id', '=', $id)->get();
+        $comments = Comment::where('news_id', '=', $id)->get();
         $news = News::where('category_id', '=', $id)->paginate(3);
         // $news = News::where('category_id', '=', $id)->simplePaginate(3);
         // dd($news);
-        return view('home.show', compact('category', 'news'));
+
+        return view('home.show', compact('category', 'news', 'comments'));
     }
 
     /**
