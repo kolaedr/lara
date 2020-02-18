@@ -2,13 +2,7 @@
 
     <div class="form-group">
         <label for="comment">Text comments</label>
-    <textarea
-        class="form-control @error('content') is-invalid @enderror"
-        name="comment"
-        id="comment"
-        placeholder="Write your comment"
-        value="Write your comment">
-    </textarea>
+    <textarea class="form-control @error('content') is-invalid @enderror" name="comment" id="comment" placeholder="Write your comment" value="Write your comment"></textarea>
         @error('comment')
             <div class="text-danger">{{ $message }}</div>
         @enderror

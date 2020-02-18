@@ -23,7 +23,7 @@
             <h4><a href="/news/{{$item->id}}">{{$item->title}}</a> </h4>
             <p>{!! $item->content !!}</p>
             <div class="d-flex justify-content-between">
-                <small class="text-muted">Comments: {{$comments->count()}}</small>
+                <small class="text-muted">Comments: {{$item->comment->count()}}</small>
                 <small class="text-muted">Publish date: {{$item->created_at}}</small>
             </div>
 

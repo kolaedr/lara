@@ -40,9 +40,12 @@
 
             <div class="card col-md-10">
                 <div class="card-body">
-                <h5 class="card-title">{{$item->title}} <small class="text-muted">Publish date: {{$item->created_at}}</small></h5>
-                <p class="card-text">{{$item->content}}</p>
-                <p class="card-text"><small class="text-muted">{{$item->category}}</small></p>
+                    <h5 class="card-title">{{$item->title}} <small class="text-muted">({{$item->created_at}})</small></h5>
+                    <p class="card-text">{!! Str::words(strip_tags($item->content), 2, '<a href="/news/'.$item->id.'"> <strong>read more</strong></a>') !!}</p>
+                    <p class="card-text">
+                        <small class="text-muted">{{$item->cat}}</small>
+                        {{$item->category ? $item->category->name : 'uncategorise'}}
+                    </p>
 
                 </div>
             </div>

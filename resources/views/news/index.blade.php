@@ -48,13 +48,11 @@
         <div class="alert alert-success">{{session('success')}}</div>
     @endif
     <div class="list-group col-8 mt-3 mb-3 categories">
-        <a href="#" class="list-group-item list-group-item-action text-primary" data-cat__id="all">All categories <span class="badge badge-primary">{{$newsCountAll}}</span></a>
-    @foreach ($categories as $item)
-      <a href="category/{{$item->id}}" class="list-group-item list-group-item-action" data-cat__id="{{$item->id}}">
+    @foreach ($categoriesSidebar as $item)
+      <a href="category/{{$item->id}}" class="list-group-item list-group-item-action {{(Request::is('category/'.$item->id)?'active':'')}}">
         {{ucfirst(trans($item->name))}}
-        @foreach ($newsCount as $count)
-            <span class="badge badge-primary">{{$count->id==$item->id?$count->count:''}}</span>
-        @endforeach
+
+        <span class="badge badge-warning">{{$item->news->count()}}</span>
 
     </a>
     @endforeach

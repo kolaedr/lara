@@ -23,6 +23,9 @@ class CommentController extends Migration
             $table->foreign('news_id')
                 ->references('id')->on('news')
                 ->onDelete('SET NULL');
+            $table
+                ->unsignedBigInteger('comment_id')
+                ->nullable();
             $table->timestamps();
         });
     }
