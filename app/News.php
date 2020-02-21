@@ -9,6 +9,11 @@ class News extends Model
     //если название таблицы не соответствует названию модели
     //таблица множественное число, модель единственное)
     protected $table = 'news';
+    protected $fillable = [
+        'title',
+        'content',
+        'category_id'
+    ];
 
     public function category()
     {

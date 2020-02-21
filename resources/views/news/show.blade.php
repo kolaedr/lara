@@ -25,13 +25,13 @@
             <footer class="blockquote-footer text-right">
                 {{ucfirst(trans($item->name))}}
                 <cite title="Source Title">(Publish date: {{$item->created_at}})</cite>
-                <form action="/comment/{{$item->id}}" method="POST">
+                {{-- <form action="/comment/{{$item->id}}" method="POST">
                     @method('DELETE')
                     @csrf
 
                     <button class="btn btn-danger">Delete</button>
 
-                </form>
+                </form> --}}
             </footer>
           </blockquote>
         @endforeach

@@ -6,8 +6,10 @@ import Form from './Comment/Form';
 export default function Main() {
     const [data, setData] = useState([]);
     const [news, setNews] = useState([]);
+    const [success, setSuccess] = useState(0);
     const [loading, setLoading] = useState(true);
     const [err, setErro] = useState(1);
+    const CSRF = document.getElementsByName('csrf-token')[0].content;
 
 
     useEffect(() => {
@@ -34,8 +36,7 @@ export default function Main() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
-        const crsf = document.getElementsByName('csrf-token')[0].content;
-        data.append('_token', crsf)
+        data.append('_token', CSRF)
 
         fetch('/comment', {
             method: 'POST',
@@ -44,19 +45,43 @@ export default function Main() {
             if (response.status === 200) {
                 // console.log('Success');
                 getItemList();
+                setSuccess(1);
+                setTimeout(() => { setSuccess(0) }, 2000);
             }
         });
         // setComment('');
     }
 
+    const handleDelete = (id) => {
+        event.preventDefault();
+        fetch('/comment/' + id, {
+            method: 'DELETE',
+            headers: {
+                "X-CSRF-TOKEN": CSRF
+            }
+        }).then(response => {
+            if (response.status === 200) {
+                getItemList();
+            }
+            return response.json()
+        })
+            .catch(error => { console.log(error) });
+    };
+
+    function Alert() {
+        return (<div className="alert alert-success" role="alert">Comment added</div>);
+    };
+
     return (
-        <div className="container">
-            <h2>React Comment</h2>
+        <div className="container col-10">
+            <h2>React Comment (count: {data.length})</h2>
+            {success === 1 ? <Alert /> : ''}
             <Form handleSubmit={handleSubmit} news={news} />
             <h5>{loading ? 'Comments loading' : ''}</h5>
             <h1>{err != 1 ? 'Error  connection: '.err : ''}</h1>
-            {data.map(({ name, comment }, i) => (
-                <Comment comments={comment} name={name} key={i} />
+            <h5>Comments list</h5>
+            {data.map(({ id, name, comment, created_at }, i) => (
+                <Comment comments={comment} name={name} id={id} key={i} handleDelete={handleDelete} created_at={created_at} />
             ))}
 
         </div>

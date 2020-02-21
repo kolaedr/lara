@@ -12,7 +12,8 @@
     <title>@yield('title')</title>
 </head>
 <body class="bg-light">
-    @if (Auth::id() === 3)
+    @if (Auth::check()?Auth::user()->name === 'admin':false)
+    {{-- @if (true) --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Admin panel</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +35,8 @@
             <li class="nav-item">
               <a class="nav-link" href="/contacts">Contacts</a>
             </li>
-            @if (Auth::id() === 3)
+            @if (Auth::check()?Auth::user()->name === 'admin':false)
+            {{-- @if (true) --}}
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">Profile</a>
                 </li>

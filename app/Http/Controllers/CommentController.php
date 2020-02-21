@@ -117,6 +117,7 @@ class CommentController extends Controller
     {
         $comm = Comment::find($id);
         $comm->delete();
-        return redirect('news')->with('success', 'Category with id: ' . $comm->id . ' DELETED!');
+        return response()->json(["status","Done"]);
+        // return redirect('news')->with('success', 'Category with id: ' . $comm->id . ' DELETED!');
     }
 }

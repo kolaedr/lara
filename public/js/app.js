@@ -69003,21 +69003,27 @@ function Comment(props) {
   const {
     id,
     name,
-    comments
+    comments,
+    handleDelete,
+    created_at,
+    i
   } = props; // const [count, setCount] = useState(0)
 
   return (//   <button onClick={() => setCount(count + 1)} className={styleBtnArr[typeBtn]}>{button} {count}</button>
     //   <div className="container">
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("blockquote", {
       className: "blockquote mt-3",
-      key: id
+      key: i
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
       className: "mb-0 h6"
-    }, comments), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
-      className: "blockquote-footer text-right"
-    }, name, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("cite", {
+    }, comments, " (", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+      href: "",
+      onClick: () => handleDelete(id)
+    }, "delete"), ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+      className: "blockquote-footer text-right "
+    }, name, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("cite", {
       title: "Source Title"
-    }, "(Publish date: today)"))) // </div>
+    }, "(Publish date: ", created_at, ")"))) // </div>
 
   );
 }
@@ -69059,26 +69065,35 @@ function Form(prop) {
   } = prop;
   const [name, setName] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('Ivan');
   const [comment, setComment] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('');
+
+  const clearForm = () => {
+    setComment('');
+  };
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-    onSubmit: event => handleSubmit(event)
+    onSubmit: event => {
+      handleSubmit(event);
+      clearForm();
+    },
+    className: "mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-group"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     htmlFor: "comment"
-  }, "Text comments", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+  }, "Text comments"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
     className: "form-control",
     name: "comment",
     id: "comment",
     placeholder: "Write your comment",
     value: comment,
     onChange: event => setComment(event.target.value)
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-inline"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-group col-8"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     htmlFor: "name"
-  }, "Your name", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+  }, "Your name"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     className: "col-md-4 form-control ml-2",
     name: "name",
@@ -69086,14 +69101,14 @@ function Form(prop) {
     placeholder: "Your name",
     value: name,
     onChange: event => setName(event.target.value)
-  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    type: "submit",
+    className: "btn btn-secondary  col-4"
+  }, "Add comment")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "hidden",
     name: "news",
     value: news
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    type: "submit",
-    className: "btn btn-secondary  col-4"
-  }, "Add comment"));
+  }));
 }
 ;
 
@@ -69122,8 +69137,10 @@ __webpack_require__.r(__webpack_exports__);
 function Main() {
   const [data, setData] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]);
   const [news, setNews] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]);
+  const [success, setSuccess] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0);
   const [loading, setLoading] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(true);
   const [err, setErro] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(1);
+  const CSRF = document.getElementsByName('csrf-token')[0].content;
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     getItemList();
   }, []);
@@ -69145,8 +69162,7 @@ function Main() {
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.target);
-    const crsf = document.getElementsByName('csrf-token')[0].content;
-    data.append('_token', crsf);
+    data.append('_token', CSRF);
     fetch('/comment', {
       method: 'POST',
       body: data
@@ -69154,22 +69170,57 @@ function Main() {
       if (response.status === 200) {
         // console.log('Success');
         getItemList();
+        setSuccess(1);
+        setTimeout(() => {
+          setSuccess(0);
+        }, 2000);
       }
     }); // setComment('');
   };
 
+  const handleDelete = id => {
+    event.preventDefault();
+    fetch('/comment/' + id, {
+      method: 'DELETE',
+      headers: {
+        "X-CSRF-TOKEN": CSRF
+      }
+    }).then(response => {
+      if (response.status === 200) {
+        getItemList();
+      }
+
+      return response.json();
+    }).catch(error => {
+      console.log(error);
+    });
+  };
+
+  function Alert() {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "alert alert-success",
+      role: "alert"
+    }, "Comment added");
+  }
+
+  ;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "React Comment"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Comment_Form__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    className: "container col-10"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "React Comment (count: ", data.length, ")"), success === 1 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Alert, null) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Comment_Form__WEBPACK_IMPORTED_MODULE_3__["default"], {
     handleSubmit: handleSubmit,
     news: news
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, loading ? 'Comments loading' : ''), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, err != 1 ? 'Error  connection: '.err : ''), data.map(({
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, loading ? 'Comments loading' : ''), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, err != 1 ? 'Error  connection: '.err : ''), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "Comments list"), data.map(({
+    id,
     name,
-    comment
+    comment,
+    created_at
   }, i) => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Comment_Comment__WEBPACK_IMPORTED_MODULE_2__["default"], {
     comments: comment,
     name: name,
-    key: i
+    id: id,
+    key: i,
+    handleDelete: handleDelete,
+    created_at: created_at
   })));
 }
 ;
