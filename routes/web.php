@@ -18,11 +18,11 @@
 /*******************************/
 
 Route::get('/', 'HomeControllerNew@index');
-Route::get('/contacts', 'HomeController@contacts');
-Route::get('/profile', 'HomeController@profile');
-Route::post('/contacts', 'HomeController@getContacts');
-Route::get('/product/{id}', 'HomeController@product');
-Route::get('/product/{id}/review/{id_review}', 'HomeController@productReview');
+Route::get('/contacts', 'HomeControllerNew@contacts');
+Route::get('/profile', 'HomeControllerNew@profile');
+Route::post('/contacts', 'HomeControllerNew@getContacts');
+Route::get('/product/{id}', 'HomeControllerNew@product');
+Route::get('/product/{id}/review/{id_review}', 'HomeControllerNew@productReview');
 // Route::get('/news/1', 'HomeController@getContacts');
 
 //два варианта или метод any
@@ -43,4 +43,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::resource('/category', 'CotegoryController');
 Route::resource('/news', 'NewsController');
 Route::resource('/comment', 'CommentController');
+// Route::post('/commentR', 'CommentController@storeR');
+
 // >>>>>>> b09704632d4d2e5e8240c5870f8e88b3ad9897fe

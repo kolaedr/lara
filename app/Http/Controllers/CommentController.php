@@ -14,7 +14,8 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Comment::all();
+        return response()->json($comments);
     }
 
     /**
@@ -35,6 +36,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate([
             'name' => 'required|max:100|min:3',
             'comment' => 'required|min:3',
@@ -51,6 +53,25 @@ class CommentController extends Controller
         return redirect('news/'.$request->news)->with('success', 'Comment: ' . $comments->comment . ' added!');
     }
 
+    public function storeR(Request $request)
+    {
+        // dd($request);
+        $request->validate([
+            'name' => 'required|max:100|min:3',
+            'comment' => 'required|min:3',
+        ]);
+
+        $comments = new Comment();     //в модели все столбцы таблицы записываются в свойства
+
+
+        $comments->name = $request->name;
+        $comments->comment = $request->comment;
+        $comments->news_id = $request->news;
+        $comments->save();
+        $succses = 'succses';
+        return response()->json($succses);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -59,7 +80,8 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        //
+        $comments = Comment::where('news_id', '=', $id)->get();
+        return response()->json($comments);
     }
 
     /**
@@ -93,6 +115,8 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comm = Comment::find($id);
+        $comm->delete();
+        return redirect('news')->with('success', 'Category with id: ' . $comm->id . ' DELETED!');
     }
 }

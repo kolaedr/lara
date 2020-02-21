@@ -20,7 +20,7 @@ class CotegoryController extends Controller
         $categories = Category::all();
         // dd($categories);
 
-        return view('home.category', compact('title', 'categories'));
+        return view('category.category', compact('title', 'categories'));
     }
 
     /**
@@ -31,7 +31,7 @@ class CotegoryController extends Controller
     public function create()
     {
         $title = 'Create category';
-        return view('home.create', compact('title'));
+        return view('category.create', compact('title'));
     }
 
     /**
@@ -68,7 +68,7 @@ class CotegoryController extends Controller
         // $news = News::where('category_id', '=', $id)->simplePaginate(3);
         // dd($news);
 
-        return view('home.show', compact('category', 'news', 'comments'));
+        return view('category.show', compact('category', 'news', 'comments'));
     }
 
     /**
@@ -81,7 +81,7 @@ class CotegoryController extends Controller
     {
         $categories = Category::find($id);
         $title = 'Edit category '.$id;
-        return view('home.edit', compact('title', 'categories'));
+        return view('category.edit', compact('title', 'categories'));
     }
 
     /**

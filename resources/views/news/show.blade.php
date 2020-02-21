@@ -22,13 +22,24 @@
         @foreach ($comments as $item)
         <blockquote class="blockquote mt-3">
             <p class="mb-0 h6">"{!! $item->comment !!}"</p>
-            <footer class="blockquote-footer text-right">{{ucfirst(trans($item->name))}} <cite title="Source Title">(Publish date: {{$item->created_at}})</cite></footer>
+            <footer class="blockquote-footer text-right">
+                {{ucfirst(trans($item->name))}}
+                <cite title="Source Title">(Publish date: {{$item->created_at}})</cite>
+                <form action="/comment/{{$item->id}}" method="POST">
+                    @method('DELETE')
+                    @csrf
+
+                    <button class="btn btn-danger">Delete</button>
+
+                </form>
+            </footer>
           </blockquote>
         @endforeach
 
     </div>
     @endif
 
+    <div id="example"></div>
 @endsection
 
 @section('sidebar')

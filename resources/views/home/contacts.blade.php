@@ -4,11 +4,7 @@
 @section('content')
     <h1>{{$title}}</h1>
     <form class="col-md-4 bg-secondary text-white-50 p-3" action="/contacts" method="POST">
-        {{-- <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div> --}}
+
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" class="form-control" name="name" id="name" placeholder="Name">
@@ -17,7 +13,7 @@
             <label class="form-check-label" for="exampleCheck1">Input text</label>
             <textarea name="message" id="exampleCheck1" cols="30" rows="3"  class="form-control"></textarea>
         </div>
-        
+
         @csrf
 
         <button type="submit" class="btn btn-success">Submit</button>

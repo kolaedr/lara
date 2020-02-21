@@ -27,4 +27,7 @@ if (revoveImg) {
 })
 }
 
-CKEDITOR.replace( 'content' );
+if (document.querySelector('#content')) {
+    CKEDITOR.replace( 'content' );
+}
+
