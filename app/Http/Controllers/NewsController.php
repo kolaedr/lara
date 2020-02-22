@@ -19,7 +19,8 @@ class NewsController extends Controller
     public function index()
     {
         $title = 'All news';
-        $news = News::all();
+        // $news = News::all();
+        $news = News::with('category', 'comment')->get();
         // $news = DB::table('news')
         //     ->join('categories', 'news.category_id', '=', 'categories.id')
         //     ->select('news.*', 'categories.name as cat')

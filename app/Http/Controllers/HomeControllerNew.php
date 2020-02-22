@@ -95,4 +95,15 @@ class HomeControllerNew extends Controller
 
         return view('home.product', compact('title'));
     }
+
+    public function search(Request $request)
+    {
+        $s= $request->s;
+        $news = News::with('category')
+            ->where('title', 'LIKE', '%'.$s.'%')
+            ->orWhere('content', 'LIKE', '%'.$s.'%')
+            ->paginate(2);
+        
+        return view('home.search', compact('news', 's'));
+    }
 }

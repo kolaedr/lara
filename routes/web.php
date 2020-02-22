@@ -45,4 +45,7 @@ Route::resource('/news', 'NewsController');
 Route::resource('/comment', 'CommentController');
 // Route::post('/commentR', 'CommentController@storeR');
 
+Route::get('/search', 'HomeControllerNew@search');
+
+
 // >>>>>>> b09704632d4d2e5e8240c5870f8e88b3ad9897fe
